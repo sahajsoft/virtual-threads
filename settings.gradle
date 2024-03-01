@@ -3,4 +3,5 @@ include 'user-service'
 include 'subscription-service'
 include 'user-service'
 include 'subscription-service'
+include 'user-service'
 
