@@ -1,12 +1,14 @@
-package ai.sahaj.entity;
+package ai.sahaj.user.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.util.Date;
 @Entity
 public class User {
 
-  private Long id;
+  @Id
+  private Integer id;
 
   private String name;
 
