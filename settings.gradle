@@ -1,4 +1,3 @@
 rootProject.name = 'virtual-threads-workshop'
 include 'user-service'
 include 'subscription-service'
-
