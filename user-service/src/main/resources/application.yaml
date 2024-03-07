@@ -31,4 +31,4 @@ management:
 api:
   subscription-service:
     base:
-      url: http://${SUBSCRIPTION_SERVICE_HOST:localhost}:${SUBSCRIPTION_SERVICE_PORT:8081}/user-plan
+      url: http://${SUBSCRIPTION_SERVICE_HOST:localhost}:${SUBSCRIPTION_SERVICE_PORT:8081}/user-plan/

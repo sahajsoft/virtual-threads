@@ -2,6 +2,7 @@ package ai.sahaj.user.service;
 
 import ai.sahaj.user.dto.UserPlanResponse;
 import ai.sahaj.user.entity.User;
+import ai.sahaj.user.exception.UserNotFoundException;
 import ai.sahaj.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,14 @@ public class UserService {
   private final String userPlanServiceUrl;
 
   public UserService(final UserRepository userRepository, final RestTemplate restTemplate,
-                     @Value("api.subscription-service.base.url") final String userPlanServiceUrl) {
+                     @Value("${api.subscription-service.base.url}") final String userPlanServiceUrl) {
     this.userRepository = userRepository;
     this.restTemplate = restTemplate;
     this.userPlanServiceUrl = userPlanServiceUrl;
   }
 
   public User getUserDetails(final Integer userId) {
-    return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found" + userId + " not found"));
   }
 
   public UserPlanResponse getUserPlanDetails(final Integer userId) {
