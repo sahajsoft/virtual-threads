@@ -6,7 +6,6 @@ services:
       - 8081:8081
     environment:
       - JDBC_PASSWORD={DB_PASSWORD}
-      - SUBSCRIPTION_SERVICE_HOST=subscription-service
     depends_on:
       db:
         condition: service_healthy
@@ -16,6 +15,8 @@ services:
       - 8082:8082
     environment:
       - JDBC_PASSWORD={DB_PASSWORD}
+      - SUBSCRIPTION_SERVICE_HOST=subscription-service
+    
     depends_on:
       db:
         condition: service_healthy
@@ -24,6 +25,8 @@ services:
     volumes:
       - ./pg_data:/var/lib/postgresql
       - ./docker-entrypoint-initdb.d/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${DB_PASSWORD}
