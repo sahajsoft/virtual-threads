@@ -62,8 +62,8 @@ class UserPlanControllerTest {
     Plan plan2 = planRepository.save(new Plan("Test2", BigDecimal.valueOf(100), 100));
 
     userPlanRepository.deleteAll();
-    UserPlan userPlan1 = new UserPlan(plan1.getId(), 1L, BigDecimal.valueOf(12), LocalDate.now());
-    UserPlan userPlan2 = new UserPlan(plan2.getId(), 3L, BigDecimal.valueOf(85), LocalDate.now());
+    UserPlan userPlan1 = new UserPlan(plan1.getId(), 1, BigDecimal.valueOf(12), LocalDate.now());
+    UserPlan userPlan2 = new UserPlan(plan2.getId(), 3, BigDecimal.valueOf(85), LocalDate.now());
     userPlanRepository.saveAll(List.of(userPlan1, userPlan2));
   }
 
@@ -90,7 +90,7 @@ class UserPlanControllerTest {
 
   @Test
   void shouldGive404WhenUserPlanNotFound() throws Exception {
-    UserPlan userPlan = new UserPlan(1000000, 4L, BigDecimal.valueOf(85), LocalDate.now());
+    UserPlan userPlan = new UserPlan(1000000, 4, BigDecimal.valueOf(85), LocalDate.now());
     userPlanRepository.save(userPlan);
 
     mockMvc.perform(get("/user-plan/4"))

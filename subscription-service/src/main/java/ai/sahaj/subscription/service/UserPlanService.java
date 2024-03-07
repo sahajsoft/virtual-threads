@@ -21,7 +21,7 @@ public class UserPlanService {
     this.userPlanRepository = userPlanRepository;
   }
 
-  public UserPlanDO getUserPlanDetails(Long userId) {
+  public UserPlanDO getUserPlanDetails(Integer userId) {
     UserPlan userPlan = userPlanRepository.findByUserId(userId)
       .orElseThrow(() -> new PlanNotFoundException("Plan for user " + userId + " not found"));
 

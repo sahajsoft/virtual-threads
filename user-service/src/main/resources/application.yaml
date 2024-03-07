@@ -27,3 +27,8 @@ management:
       show-details: always
       probes:
         enabled: livenessstate,readinessstate
+
+api:
+  subscription-service:
+    base:
+      url: http://localhost:8081/user-plan

@@ -6,7 +6,7 @@ import ai.sahaj.subscription.entity.UserPlan;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record UserPlanDO(Long userId, Integer planId, BigDecimal dataConsumed, LocalDate planStartDate,
+public record UserPlanDO(Integer userId, Integer planId, BigDecimal dataConsumed, LocalDate planStartDate,
                          BigDecimal dataAlloted, String planName) {
 
   public static UserPlanDO from(UserPlan userPlan, Plan plan) {

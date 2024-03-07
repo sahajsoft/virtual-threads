@@ -16,13 +16,13 @@ public class UserPlan {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Integer userPlanId;
   private Integer planId;
-  private Long userId;
+  private Integer userId;
   private BigDecimal dataConsumed;
   private LocalDate startDate;
   private LocalDate createdAt;
   private LocalDate updatedAt;
 
-  public UserPlan(Integer planId, Long userId, BigDecimal dataConsumed, LocalDate startDate) {
+  public UserPlan(Integer planId, Integer userId, BigDecimal dataConsumed, LocalDate startDate) {
     this.planId = planId;
     this.userId = userId;
     this.dataConsumed = dataConsumed;

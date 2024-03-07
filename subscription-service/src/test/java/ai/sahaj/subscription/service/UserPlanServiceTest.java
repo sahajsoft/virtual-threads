@@ -24,8 +24,8 @@ class UserPlanServiceTest {
 
   @Test
   void shouldGetUserPlanDetailsForGivenUser() {
-    Long userId = 1L;
-    UserPlan userPlan = new UserPlan(1, 1L, BigDecimal.valueOf(12), LocalDate.now());
+    Integer userId = 1;
+    UserPlan userPlan = new UserPlan(1, 1, BigDecimal.valueOf(12), LocalDate.now());
     when(userPlanRepository.findByUserId(userId))
       .thenReturn(Optional.of(userPlan));
     Plan plan = new Plan(1, "Test", BigDecimal.valueOf(100), 100);
@@ -34,13 +34,13 @@ class UserPlanServiceTest {
 
     UserPlanDO userPlanDO = userPlanService.getUserPlanDetails(userId);
 
-    UserPlanDO expectedUserPlanDO = new UserPlanDO(1L, 1, userPlan.getDataConsumed(), userPlan.getStartDate(), plan.getData(), plan.getName());
+    UserPlanDO expectedUserPlanDO = new UserPlanDO(1, 1, userPlan.getDataConsumed(), userPlan.getStartDate(), plan.getData(), plan.getName());
     assertEquals(expectedUserPlanDO, userPlanDO);
   }
 
   @Test
   void shouldThrowExceptionWhenPlanForUserNotFound() {
-    Long userId = 1L;
+    Integer userId = 1;
     when(userPlanRepository.findByUserId(userId))
       .thenReturn(Optional.empty());
 
@@ -49,8 +49,8 @@ class UserPlanServiceTest {
 
   @Test
   void shouldThrowExceptionWhenPlanDetailsNotFound() {
-    Long userId = 1L;
-    UserPlan userPlan = new UserPlan(1, 1L, BigDecimal.valueOf(12), LocalDate.now());
+    Integer userId = 1;
+    UserPlan userPlan = new UserPlan(1, 1, BigDecimal.valueOf(12), LocalDate.now());
     when(userPlanRepository.findByUserId(userId))
       .thenReturn(Optional.of(userPlan));
     Plan plan = new Plan(1, "Test", BigDecimal.valueOf(100), 100);
