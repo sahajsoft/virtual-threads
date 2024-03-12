@@ -5,7 +5,7 @@ spring:
   datasource:
     hikari:
       connectionTimeout: 20000
-      maximumPoolSize: ${POSTGRES_CONNECTION_POOL:2}
+      maximumPoolSize: ${POSTGRES_CONNECTION_POOL:5}
     
     url: ${POSTGRES_CONNECT_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${POSTGRES_USERNAME:postgres}
