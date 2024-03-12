@@ -23,7 +23,7 @@ class UserPlanServiceTest {
   private UserPlanService userPlanService = new UserPlanService(planRepository, userPlanRepository);
 
   @Test
-  void shouldGetUserPlanDetailsForGivenUser() {
+  void shouldGetUserPlanDetailsForGivenUser() throws InterruptedException {
     Integer userId = 1;
     UserPlan userPlan = new UserPlan(1, 1, BigDecimal.valueOf(12), LocalDate.now());
     when(userPlanRepository.findByUserId(userId))

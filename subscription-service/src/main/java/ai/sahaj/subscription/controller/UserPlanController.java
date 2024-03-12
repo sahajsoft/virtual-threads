@@ -18,7 +18,7 @@ public class UserPlanController {
 
 
   @GetMapping("/{userId}")
-  public UserPlanResponse getUserPlanDetailsForUserId(@PathVariable("userId") Integer userId) {
+  public UserPlanResponse getUserPlanDetailsForUserId(@PathVariable("userId") Integer userId) throws InterruptedException {
     return UserPlanResponse.from(userPlanService.getUserPlanDetails(userId));
   }
 

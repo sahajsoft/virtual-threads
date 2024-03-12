@@ -4,11 +4,13 @@ import ai.sahaj.user.dto.UserPlanResponse;
 import ai.sahaj.user.entity.User;
 import ai.sahaj.user.exception.UserNotFoundException;
 import ai.sahaj.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
+@Slf4j
 public class UserService {
   private final UserRepository userRepository;
 
@@ -28,6 +30,7 @@ public class UserService {
   }
 
   public UserPlanResponse getUserPlanDetails(final Integer userId) {
+    log.info("Get plan details for user: {}", userId);
     validateUser(userId);
     return restTemplate.getForObject(userPlanServiceUrl + userId, UserPlanResponse.class);
   }

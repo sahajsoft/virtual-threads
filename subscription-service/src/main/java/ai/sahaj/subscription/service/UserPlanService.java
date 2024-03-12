@@ -21,13 +21,14 @@ public class UserPlanService {
     this.userPlanRepository = userPlanRepository;
   }
 
-  public UserPlanDO getUserPlanDetails(Integer userId) {
+  public UserPlanDO getUserPlanDetails(Integer userId) throws InterruptedException {
     UserPlan userPlan = userPlanRepository.findByUserId(userId)
       .orElseThrow(() -> new PlanNotFoundException("Plan for user " + userId + " not found"));
 
     Plan plan = planRepository.findById(userPlan.getPlanId())
       .orElseThrow(() -> new PlanNotFoundException(("Plan with id " + userPlan.getPlanId() + " not found")));
 
+    Thread.sleep(2000);
     return UserPlanDO.from(userPlan, plan);
   }
 
