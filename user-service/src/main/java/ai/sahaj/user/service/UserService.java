@@ -6,8 +6,14 @@ import ai.sahaj.user.exception.UserNotFoundException;
 import ai.sahaj.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -31,13 +37,16 @@ public class UserService {
 
   public UserPlanResponse getUserPlanDetails(final Integer userId) {
     log.info("Get plan details for user: {}", userId);
-    validateUser(userId);
     return restTemplate.getForObject(userPlanServiceUrl + userId, UserPlanResponse.class);
   }
 
-  private void validateUser(final Integer userId) {
-    if (userRepository.findById(userId).isEmpty()) {
-      throw new RuntimeException("User not found");
-    }
+  public List<UserPlanResponse> getUserPlanReport() {
+    return Stream
+      .iterate(0, page -> page + 1)
+      .map(page -> userRepository.findAll(PageRequest.of(page, 10)))
+      .takeWhile(users -> !users.isEmpty())
+      .flatMap(Streamable::stream)
+      .map(user -> getUserPlanDetails(user.getId()))
+      .toList();
   }
 }

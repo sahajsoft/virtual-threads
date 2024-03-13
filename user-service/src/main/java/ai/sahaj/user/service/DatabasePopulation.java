@@ -23,7 +23,7 @@ public class DatabasePopulation {
   @PostConstruct
   public void populateUsers() {
     List<User> users = Stream
-      .iterate(1, userId -> userId <= 400, userId -> userId + 1)
+      .iterate(1, userId -> userId <= 20, userId -> userId + 1)
       .map(userId -> new User(userId, faker.name().fullName()))
       .toList();
     userRepository.saveAll(users);

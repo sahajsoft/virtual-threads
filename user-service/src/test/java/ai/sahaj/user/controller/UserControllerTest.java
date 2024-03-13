@@ -2,6 +2,7 @@ package ai.sahaj.user.controller;
 
 import ai.sahaj.user.entity.User;
 import ai.sahaj.user.repository.UserRepository;
+import ai.sahaj.user.service.DatabasePopulation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +30,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -40,6 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("classpath:application-test.yaml")
 class UserControllerTest {
+
+  @MockBean
+  private DatabasePopulation databasePopulation;
 
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
     "postgres:16-alpine"
@@ -72,6 +78,7 @@ class UserControllerTest {
   private RestTemplate restTemplate;
 
   private MockRestServiceServer mockServer;
+
   @BeforeEach
   void setUp() {
     User user1 = new User(1, "John");
@@ -82,7 +89,7 @@ class UserControllerTest {
 
   @Test
   void shouldGetPlanDetailsForProvidedUserId() throws Exception {
-    setupSuccessfulUserPlanResponse();
+    setupSuccessfulUserPlanResponse(1);
     mockMvc.perform(get("/user-plan/1"))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.userId").value(1L))
@@ -90,12 +97,24 @@ class UserControllerTest {
       .andExpect(jsonPath("$.dataBalance").value(BigDecimal.valueOf(88.0).setScale(1)));
   }
 
-  private void setupSuccessfulUserPlanResponse() throws URISyntaxException {
+  @Test
+  void shouldGetPlanReport() throws Exception {
+    List<User> users = userRepository.findAll();
+    for (User user : users) {
+      setupSuccessfulUserPlanResponse(user.getId());
+    }
+    mockMvc.perform(get("/user-plan/report"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$").isArray())
+      .andExpect(jsonPath("$[*].userId", containsInAnyOrder(users.stream().map(User::getId).toArray())));
+  }
+
+  private void setupSuccessfulUserPlanResponse(Integer userId) throws URISyntaxException {
     mockServer.expect(ExpectedCount.once(),
-      requestTo(new URI("http://localhost:8081/user-plan/1")))
+        requestTo(new URI("http://localhost:8081/user-plan/" + userId)))
       .andExpect(method(HttpMethod.GET))
       .andRespond(withStatus(HttpStatus.OK)
         .contentType(MediaType.APPLICATION_JSON)
-        .body("{\"userId\":1,\"planId\":1,\"planName\":\"Test1\",\"dataBalance\":88.0,\"startDate\":\"2022-01-01\"}"));
+        .body("{\"userId\":" + userId + ",\"planId\":1,\"planName\":\"Test1\",\"dataBalance\":88.0,\"startDate\":\"2022-01-01\"}"));
   }
 }

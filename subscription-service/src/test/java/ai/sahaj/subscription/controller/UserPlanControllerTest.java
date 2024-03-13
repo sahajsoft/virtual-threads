@@ -4,6 +4,7 @@ import ai.sahaj.subscription.entity.Plan;
 import ai.sahaj.subscription.entity.UserPlan;
 import ai.sahaj.subscription.repository.PlanRepository;
 import ai.sahaj.subscription.repository.UserPlanRepository;
+import ai.sahaj.subscription.service.DatabasePopulation;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,6 +32,9 @@ class UserPlanControllerTest {
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
     "postgres:16-alpine"
   );
+
+  @MockBean
+  private DatabasePopulation databasePopulation;
 
   @BeforeAll
   static void beforeAll() {
