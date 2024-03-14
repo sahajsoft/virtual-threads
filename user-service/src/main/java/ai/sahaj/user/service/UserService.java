@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 @Slf4j
 public class UserService {
+  private static final int PAGE_SIZE = 10;
   private final UserRepository userRepository;
 
   private final RestTemplate restTemplate;
@@ -43,7 +43,7 @@ public class UserService {
   public List<UserPlanResponse> getUserPlanReport() {
     return Stream
       .iterate(0, page -> page + 1)
-      .map(page -> userRepository.findAll(PageRequest.of(page, 10)))
+      .map(page -> userRepository.findAll(PageRequest.of(page, PAGE_SIZE)))
       .takeWhile(users -> !users.isEmpty())
       .flatMap(Streamable::stream)
       .map(user -> getUserPlanDetails(user.getId()))
