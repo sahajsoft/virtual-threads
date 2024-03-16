@@ -1,14 +1,19 @@
 plugins {
-	id 'java'
+    id 'java'
 }
 
 group = 'ai.sahaj.virtual.threads'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '21'
+    sourceCompatibility = '21'
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+
 }
 
+
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
