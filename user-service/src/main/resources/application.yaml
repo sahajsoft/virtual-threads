@@ -1,7 +1,8 @@
 server:
   port: 8082
   tomcat:
-    max-threads: 2
+    threads:
+      max: 2
 
 spring:
   datasource:
